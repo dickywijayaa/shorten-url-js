@@ -4,6 +4,6 @@ module.exports = function(app) {
     var ctrl = require('./controller')
     
     app.route('/').get(ctrl.index)
-    app.route('/users').get(ctrl.users)
-    app.route('/shorten').post(ctrl.shorten)
+    app.route('/:shortcode').get(ctrl.getURLFromShortcode)
+    app.route('/shorten').post(ctrl.postShorten)
 }

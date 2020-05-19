@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function(app) {
-    var ctrl = require('./controller')
+    var ctrl = require('../controllers/controller')
     
     app.route('/').get(ctrl.index)
     app.route('/:shortcode').get(ctrl.getURLFromShortcode)

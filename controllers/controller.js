@@ -1,8 +1,8 @@
 'use strict';
 
-var response = require('./response');
-var service = require('./service');
-var constants = require('./constants')
+var response = require('../helpers/response');
+var service = require('../services/service');
+var constants = require('../helpers/constants')
 
 exports.index = function(req, res) {
     return response.ok("Hello World!", res)

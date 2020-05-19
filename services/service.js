@@ -1,7 +1,7 @@
 'use strict';
 
-var repository = require('./repository')
-var constants = require('./constants')
+var repository = require('../repositories/repository')
+var constants = require('../helpers/constants')
 
 var result = {
     status_code: constants.HTTP_INTERNAL_SERVER_ERROR,

@@ -1,6 +1,6 @@
 'use strict'
 
-var connection = require('./connection');
+var connection = require('../database/connection');
 
 function checkCodeExists(code) {
     return new Promise(resolve => {

@@ -1,10 +1,19 @@
-const { Client } = require('pg')
-const connectionString = 'postgresql://' + process.env.DB_USERNAME + ':@' + process.env.DB_HOST + ':' + process.env.DB_PORT + '/' + process.env.DB_NAME;
+var mysql = require('mysql');
 
-var client = new Client({
-  connectionString: connectionString,
-})
+const dotenv = require('dotenv');
+dotenv.config();
 
-client.connect()
+var client = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+  database: process.env.DB_NAME
+});
+
+client.connect(function(err) {
+  if (err) throw err;
+  console.log("Database connected in server : ", process.env.DB_HOST);
+});
 
 module.exports = client

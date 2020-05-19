@@ -2,20 +2,35 @@
 
 var connection = require('./connection');
 
-var checkCodeExists = function (code) {
-    return new Promise((resolve, reject) => {
-        let text = 'SELECT * FROM shorty WHERE shortcode = $1'
+function checkCodeExists(code) {
+    return new Promise(resolve => {
+        var query = 'SELECT count(*) as count FROM shorten WHERE shortcode = ?';
         let values = [code]
-
-        connection.query(text, values, (err, res) => {
-            if (err) {
-                return reject(err)
+        connection.query(query, values, function (error, rows, fields){
+            if(error){
+                console.log(error)
+            } else{
+                resolve(rows);
             }
-            resolve(res)
-        })
+        });
+    });
+}
+
+function storeShortcode(payload) {
+    return new Promise(resolve => {
+        var query = 'INSERT INTO shorten(url, shortcode) VALUES(?, ?)';
+        let values = [payload.url, payload.code]
+        connection.query(query, values, function (error, rows, fields){
+            if(error){
+                console.log(error)
+            } else{
+                resolve(rows);
+            }
+        });
     });
 }
 
 module.exports = {
-    checkCodeExists
+    checkCodeExists,
+    storeShortcode
 }

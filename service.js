@@ -1,15 +1,33 @@
 'use strict';
 
 var repository = require('./repository')
+var constants = require('./constants')
 
-exports.StoreShortenURL = function(payload) {
+var result = {
+    status_code: constants.HTTP_INTERNAL_SERVER_ERROR,
+    message: constants.INTERNAL_SERVER_ERROR_DEFAULT_MESSAGE,
+    data: []
+}
+
+exports.StoreShortenURL = async function(payload) {
     // check code exists
-    let check = repository.checkCodeExists(payload.shortcode)
-    console.log(check)
-    
-    if (!check) {
-        return "code already exists";
+    let check = await repository.checkCodeExists(payload.code)
+
+    if (check && check[0].count > 0) {
+        result.status_code = constants.HTTP_UNPROCESSABLE_ENTITY;
+        result.message = constants.SHORTCODE_ALREADY_EXISTS_IN_DATABASE;
+        return result;
     }
 
-    return check;
+    let insert = await repository.storeShortcode(payload)
+    if (!insert) {
+        // insert is undefined, error should be console logged at repository
+        throw "failed when insert to database";
+    }
+
+    payload.id = insert.insertId
+
+    result.status_code = constants.HTTP_STATUS_OK;
+    result.data = payload
+    return result;
 }

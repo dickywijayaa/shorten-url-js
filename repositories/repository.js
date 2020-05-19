@@ -30,7 +30,22 @@ function storeShortcode(payload) {
     });
 }
 
+function getURLFromCode(code) {
+    return new Promise(resolve => {
+        var query = 'SELECT url FROM shorten WHERE shortcode = ?';
+        let values = [code]
+        connection.query(query, values, function (error, rows, fields){
+            if(error){
+                console.log(error)
+            } else{
+                resolve(rows);
+            }
+        });
+    });
+}
+
 module.exports = {
     checkCodeExists,
-    storeShortcode
+    storeShortcode,
+    getURLFromCode
 }

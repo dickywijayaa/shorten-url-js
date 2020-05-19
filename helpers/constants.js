@@ -12,6 +12,8 @@ var REQUIRED_URL_INPUT = "url is required";
 var REQUIRED_SHORTCODE_INPUT = "shortcode is required";
 var INVALID_REGEX_SHORTCODE_INPUT = "invalid shortcode pattern";
 var SHORTCODE_ALREADY_EXISTS_IN_DATABASE = "code already exists in database.";
+var SHORTCODE_NOT_EXISTS_IN_DATABASE = "code not found in database.";
+var INVALID_URL_PREFIX = "url prefix must be started with http(s):// !"
 
 module.exports = {
     HTTP_STATUS_OK,
@@ -22,5 +24,7 @@ module.exports = {
     REQUIRED_URL_INPUT,
     REQUIRED_SHORTCODE_INPUT,
     INVALID_REGEX_SHORTCODE_INPUT,
-    SHORTCODE_ALREADY_EXISTS_IN_DATABASE
+    SHORTCODE_ALREADY_EXISTS_IN_DATABASE,
+    SHORTCODE_NOT_EXISTS_IN_DATABASE,
+    INVALID_URL_PREFIX
 }

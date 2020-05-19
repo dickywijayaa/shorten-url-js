@@ -15,6 +15,10 @@ exports.postShorten = async function(req, res) {
             return response.badRequest(constants.REQUIRED_URL_INPUT, res);
         }
 
+        if (!req.body.url.startsWith("http://") && !req.body.url.startsWith("https://")) {
+            return response.badRequest(constants.INVALID_URL_PREFIX, res);
+        }
+
         if (!req.body.shortcode) {
             return response.badRequest(constants.REQUIRED_SHORTCODE_INPUT, res)
         }
@@ -42,7 +46,16 @@ exports.postShorten = async function(req, res) {
     }
 }
 
-exports.getURLFromShortcode = function(req, res) {
-    // to-do
-    return response.ok("Hello Shortcode: " + req.params.shortcode, res)
+exports.getURLFromShortcode = async function(req, res) {
+    try {
+        let result = await service.FetchURLByCode(req.params.shortcode)
+        if (result.status_code == constants.HTTP_UNPROCESSABLE_ENTITY) {
+            return response.unprocessableEntity(result.message, res)
+        }
+
+        return res.redirect(result.data)
+    } catch(e) {
+        console.log(e)
+        return response.internalServerError(res)
+    }
 }

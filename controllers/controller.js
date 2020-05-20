@@ -4,11 +4,11 @@ var response = require('../helpers/response');
 var service = require('../services/service');
 var constants = require('../helpers/constants')
 
-exports.index = function(req, res) {
+exports.index = (req, res) => {
     return response.ok("Hello World!", res)
 }
 
-exports.postShorten = function(req, res) {
+exports.postShorten = (req, res) => {
     // validate input
     if (!req.body.url) {
         return response.badRequest(constants.REQUIRED_URL_INPUT, res);
@@ -33,29 +33,29 @@ exports.postShorten = function(req, res) {
     }
 
     return service.StoreShortenURL(payload)
-        .then(function(result) {
+        .then(result => {
             if (result.status_code == constants.HTTP_UNPROCESSABLE_ENTITY) {
                 return response.unprocessableEntity(result.message, res);
             }
     
             return response.ok(result.data, res);
         })
-        .catch(function(error) {
+        .catch(error => {
             console.log(error);
             return response.internalServerError(res);
         });
 }
 
-exports.getURLFromShortcode = function(req, res) {
+exports.getURLFromShortcode = (req, res) => {
     return service.FetchURLByCode(req.params.shortcode)
-        .then(function(result) {
+        .then(result => {
             if (result.status_code == constants.HTTP_UNPROCESSABLE_ENTITY) {
                 return response.unprocessableEntity(result.message, res);
             }
 
             return res.redirect(result.data);
         })
-        .catch(function(error) {
+        .catch(error => {
             console.log(error);
             return response.internalServerError(res);
         });

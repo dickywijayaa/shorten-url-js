@@ -5,12 +5,12 @@ var TABLE_NAME = 'shorten';
 var query, values;
 
 function checkCodeExists(code) {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         query = 'SELECT count(*) as count FROM ' + TABLE_NAME + ' WHERE shortcode = ?';
         values = [code]
         connection.query(query, values, function (error, rows, fields){
             if(error){
-                console.log(error)
+                reject(error)
             } else{
                 resolve(rows);
             }
@@ -24,7 +24,6 @@ function storeShortcode(payload) {
         values = [payload.url, payload.code]
         connection.query(query, values, function (error, rows, fields){
             if(error){
-                console.log(error)
                 reject(error)
             } else{
                 resolve(rows);
@@ -39,7 +38,6 @@ function getURLFromCode(code) {
         values = [code]
         connection.query(query, values, function (error, rows, fields){
             if(error){
-                console.log(error)
                 reject(error)
             } else{
                 resolve(rows);
@@ -58,7 +56,6 @@ function updateLastSeen(data) {
         
         connection.query(query, values, function (error, rows, fields){
             if(error){
-                console.log(error)
                 reject(error)
             } else{
                 resolve(rows);

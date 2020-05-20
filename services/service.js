@@ -10,13 +10,14 @@ var response = {
 }
 
 exports.StoreShortenURL = (payload) => {
-    // check code exists
-    return repository.checkCodeExists(payload.code)
+    return new Promise((resolve, reject) => {
+        // check code exists
+        return repository.checkCodeExists(payload.code)
         .then(check => {
             if (check && check[0].count > 0) {
                 response.status_code = constants.HTTP_UNPROCESSABLE_ENTITY;
                 response.message = constants.SHORTCODE_ALREADY_EXISTS_IN_DATABASE;
-                return response;
+                resolve(response);
             }
 
             return repository.storeShortcode(payload)
@@ -25,37 +26,38 @@ exports.StoreShortenURL = (payload) => {
 
                     response.status_code = constants.HTTP_STATUS_OK;
                     response.data = payload;
-                    return response;
+                    resolve(response);
                 });
         })
         .catch(error => {
-            console.log(error);
-            return response;
+            reject(error);
         });
+    });
 }
 
 exports.FetchURLByCode = (code) => {
-    return repository.getURLFromCode(code)
-        .then(data => {
-            if (data.length == 0) {
-                response.status_code = constants.HTTP_UNPROCESSABLE_ENTITY;
-                response.message = constants.SHORTCODE_NOT_EXISTS_IN_DATABASE;
-                return response;
-            }
-
-            // update last seen and count
-            return repository.updateLastSeen(data)
-            .then(result => {
-                if (result.affectedRows < 1) {
-                    console.log(constants.FAILED_UPDATE_SHORTCODE_STATS);
+    return new Promise((resolve, reject) => {
+        repository.getURLFromCode(code)
+            .then(data => {
+                if (data.length == 0) {
+                    response.status_code = constants.HTTP_UNPROCESSABLE_ENTITY;
+                    response.message = constants.SHORTCODE_NOT_EXISTS_IN_DATABASE;
+                    resolve(response);
                 }
 
-                response.status_code = constants.HTTP_STATUS_OK;
-                response.data = data[0].url;
-                return response;
-            })
-        }).catch(error => {
-            console.log(error);
-            return response;
+                // update last seen and count
+                return repository.updateLastSeen(data)
+                .then(result => {
+                    if (result.affectedRows < 1) {
+                        console.log(constants.FAILED_UPDATE_SHORTCODE_STATS);
+                    }
+
+                    response.status_code = constants.HTTP_STATUS_OK;
+                    response.data = data[0].url;
+                    resolve(response);
+                })
+            }).catch(error => {
+                reject(error)
+            });
         });
 }

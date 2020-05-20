@@ -15,6 +15,9 @@ var SHORTCODE_ALREADY_EXISTS_IN_DATABASE = "code already exists in database.";
 var SHORTCODE_NOT_EXISTS_IN_DATABASE = "code not found in database.";
 var INVALID_URL_PREFIX = "url prefix must be started with http(s):// !"
 
+// Failed Messages
+var FAILED_UPDATE_SHORTCODE_STATS = "failed when update shortcode stats";
+
 module.exports = {
     HTTP_STATUS_OK,
     HTTP_STATUS_BAD_REQUEST,
@@ -26,5 +29,6 @@ module.exports = {
     INVALID_REGEX_SHORTCODE_INPUT,
     SHORTCODE_ALREADY_EXISTS_IN_DATABASE,
     SHORTCODE_NOT_EXISTS_IN_DATABASE,
-    INVALID_URL_PREFIX
+    INVALID_URL_PREFIX,
+    FAILED_UPDATE_SHORTCODE_STATS
 }

@@ -4,5 +4,5 @@ CREATE TABLE shorten (
 	shortcode varchar(7) not null,
 	start_date timestamp default CURRENT_TIMESTAMP,
     last_seen_date timestamp null,
-    redirect_count int
+    redirect_count int DEFAULT 0
 )

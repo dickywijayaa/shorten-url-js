@@ -8,7 +8,7 @@ exports.index = function(req, res) {
     return response.ok("Hello World!", res)
 }
 
-exports.postShorten = async function(req, res) {
+exports.postShorten = function(req, res) {
     // validate input
     if (!req.body.url) {
         return response.badRequest(constants.REQUIRED_URL_INPUT, res);
@@ -46,7 +46,7 @@ exports.postShorten = async function(req, res) {
         });
 }
 
-exports.getURLFromShortcode = async function(req, res) {
+exports.getURLFromShortcode = function(req, res) {
     return service.FetchURLByCode(req.params.shortcode)
         .then(function(result) {
             if (result.status_code == constants.HTTP_UNPROCESSABLE_ENTITY) {

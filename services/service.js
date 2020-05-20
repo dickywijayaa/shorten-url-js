@@ -9,7 +9,7 @@ var result = {
     data: []
 }
 
-exports.StoreShortenURL = async function(payload) {
+exports.StoreShortenURL = (payload) => {
     // check code exists
     return repository.checkCodeExists(payload.code)
         .then(function(check) {
@@ -34,7 +34,7 @@ exports.StoreShortenURL = async function(payload) {
         });
 }
 
-exports.FetchURLByCode = async function(code) {
+exports.FetchURLByCode = (code) => {
     return repository.getURLFromCode(code)
         .then(function(data) {
             if (data.length == 0) {
